@@ -4,7 +4,7 @@ import { FaRegTrashCan } from "react-icons/fa6";
 
 const LineItems = ({item,handleCheck,handleDelete}) => {
   return (
-    <li className='item' key={item.id}>
+    <li className='item' >
               <input
                 type='checkbox'
                 checked={item.checked}
