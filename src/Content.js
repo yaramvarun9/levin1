@@ -1,31 +1,60 @@
 import React,{ useState } from 'react'
+import { FaRegTrashCan } from "react-icons/fa6";
 
 const Content = () => {
-  const [name,setName] = useState('Levin');
-  const [count,setCount] = useState(0);
+  const [items,setItems] = useState([{
+    "id": 1,
+    "checked": false,
+    "item": "Learn React Hooks"
+  },
+  {
+    "id": 2,
+    "checked": true,
+    "item": "Build a To-Do App"
+  },
+  {
+    "id": 3,
+    "checked": false,
+    "item": "Review API Integration"
+  }]);
 
-
-  const handleClick = () =>{
-    setName("Chaac");
-    console.log("You Clicked Here");
+  const handleCheck = (id) =>{
+    console.log(`Key ${id}`);
+    const listItems = items.map(item => item.id === id ? {...item, checked: !item.checked} : item )
+    console.log(listItems);
+    setItems(listItems);
+    localStorage.setItem('shopping item',JSON.stringify(listItems));
   }
-  const handleClick2 = (name) =>{
-    setCount(count+1);
-    console.log(count); 
-  }
-  const handleClick3 = (e) =>{
-    console.log(e);
-    console.log(e.target);
+  const handleDelete = (id) =>{
+    console.log(`Delete ${id}`)
+    const listItems = items.filter(item => item.id != id);
+    setItems(listItems);
+    localStorage.setItem('shopping item',JSON.stringify(listItems));
   }
 
   return (
     <main>
-        <p onDoubleClick={handleClick}>
-            Hello {name}
-        </p>
-        <button onClick={handleClick}>Change Name</button>
-        <button onClick={()=> handleClick2('Varun')}>Click2</button>
-        <button onClick={(e)=> handleClick3(e)}>Click2</button>
+      {items.length ?
+        (<ul>
+          {items.map((item) => (
+            <li className='item' key={item.id}>
+              <input
+                type='checkbox'
+                checked={item.checked}
+                onChange={()=>handleCheck(item.id)}
+                />
+              <label>{item.item}</label>
+              <FaRegTrashCan
+                onClick={()=>handleDelete(item.id)} 
+                role="button" 
+                tabIndex="0" 
+              />
+            </li>
+          ))}
+        </ul>)
+      : (<p>Your List Empty</p>)
+      }
+
     </main>
   )
 }
